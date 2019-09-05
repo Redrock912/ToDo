@@ -8,7 +8,9 @@ var task = [];
 function realDueDate(index) {
   var currentDate = new Date();
 
-  var dueDate = new Date(currentDate.getTime() + index * 24 * 60 * 60 * 1000);
+  var dueDate = new Date(
+    currentDate.getTime() + index * 24 * 60 * 60 * 1000
+  ).getTime();
 
   return dueDate;
 }
@@ -17,6 +19,14 @@ function showLeftDays(date) {
   var currentDate = new Date();
 
   return Math.ceil((date - currentDate) / 1000 / 60 / 60 / 24);
+}
+
+function updateFile(data) {
+  fs.writeFile("./taskList.json", JSON.stringify(data), function(error) {
+    if (error) {
+      throw error;
+    }
+  });
 }
 
 fs.exists("./taskList.json", function(exists) {
@@ -37,11 +47,7 @@ fs.exists("./taskList.json", function(exists) {
 
         data.taskList = task;
 
-        fs.writeFile("./taskList.json", JSON.stringify(data), function(error) {
-          if (error) {
-            throw error;
-          }
-        });
+        updateFile(data);
       }
     );
   }
@@ -51,16 +57,34 @@ router.post("/addtask", function(req, res) {
   var newTaskText = req.body.newTask;
   var newTaskDate = req.body.dueDate;
   var newTaskPriority = req.body.priority;
+  var newTaskDueDate;
 
   if (newTaskText != "") {
+    // check for null task
     if (newTaskDate == "") {
       newTaskDate = "1";
     }
     task.push({
       text: newTaskText,
       date: newTaskDate,
-      priority: newTaskPriority
+      priority: newTaskPriority,
+      realDate: realDueDate(newTaskDate)
     });
+
+    fs.readFile(
+      "./taskList.json",
+      {
+        encoding: "utf8"
+      },
+      function(err, taskList) {
+        console.log(taskList);
+        var data = JSON.parse(taskList);
+
+        data.taskList = task;
+
+        updateFile(data);
+      }
+    );
   }
 
   res.redirect("/");
