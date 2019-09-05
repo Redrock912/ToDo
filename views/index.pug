@@ -1,5 +1,73 @@
+
 extends layout
 
 block content
   h1= title
+
+  .container
+    
+      form(action = "/addtask" method="POST")
+        input(type="text" name="newTask" placeholder = "what to do next?")
+        input(type="number" name="dueDate" placeholder = "Due date: 1 (default)")
+        select(name="priority")
+          option(value="1").
+            ASAP
+          option(value="2").
+            Ordinary
+          option(value="3").
+            take it slow
+        button(type="submit").
+          add task
+        h2 Current task
+          table(id="taskTable")
+            tr
+              th Done?
+              th What to do?
+              th Due date
+              th Priority
+            each val in task
+              tr
+                td
+                  button(type="submit" action="/removetask").
+                    Complete
+                td
+                  text= val.text
+                td
+                  text= val.date
+                td
+                  case val.priority
+                    when 1
+                      p ASAP
+                    when 2
+                      p Ordinary
+                    when 3
+                      p take it slow
+                    when "1"
+                      p ASAP
+                    when "2"
+                      p Ordinary
+                    when "3"
+                      p take it slow
+                  
+        button(type="reset" action="/removetask").
+          Remove
+      h2 Archive
+        table(id="finished")
+          tr
+            th Done?
+            th What to do?
+          each val in complete
+            tr
+              td
+                input(type="checkbox" checked)
+              td
+                text= val
+
+  
+
+    
+
+    
+
+
   p Happy Coding!
