@@ -19,6 +19,7 @@ block content
         button(type="submit").
           add task
         h2 Current task
+        
           table(id="taskTable")
             tr
               th Done?
@@ -51,6 +52,8 @@ block content
                   
         button(type="reset" action="/removetask").
           Remove
+
+          
       h2 Archive
         table(id="finished")
           tr

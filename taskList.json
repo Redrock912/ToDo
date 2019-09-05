@@ -1,6 +1,1 @@
-{
-  "taskList": [
-    { "text": "go to Westfall", "date": 1, "priority": 3 },
-    { "text": "Get tank for Deadmine", "date": 2, "priority": 2 }
-  ]
-}
+{"taskList":[{"text":"go to Westfall","date":0,"priority":3,"realDate":1567679919654},{"text":"Get tank for Deadmine","date":0,"priority":2,"realDate":1567679919654}]}

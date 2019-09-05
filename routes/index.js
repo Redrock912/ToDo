@@ -5,6 +5,20 @@ var app = express();
 
 var task = [];
 
+function realDueDate(index) {
+  var currentDate = new Date();
+
+  var dueDate = new Date(currentDate.getTime() + index * 24 * 60 * 60 * 1000);
+
+  return dueDate;
+}
+
+function showLeftDays(date) {
+  var currentDate = new Date();
+
+  return Math.ceil((date - currentDate) / 1000 / 60 / 60 / 24);
+}
+
 fs.exists("./taskList.json", function(exists) {
   if (exists) {
     fs.readFile(
@@ -14,9 +28,20 @@ fs.exists("./taskList.json", function(exists) {
       },
       function(err, taskList) {
         console.log(taskList);
-        //task = JSON.parse(taskList).taskList;
+        var data = JSON.parse(taskList);
+        task = data.taskList;
 
-        console.log(task);
+        for (var i = 0; i < task.length; i++) {
+          task[i].date = showLeftDays(task[i].realDate);
+        }
+
+        data.taskList = task;
+
+        fs.writeFile("./taskList.json", JSON.stringify(data), function(error) {
+          if (error) {
+            throw error;
+          }
+        });
       }
     );
   }
