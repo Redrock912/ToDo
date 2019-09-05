@@ -29,29 +29,40 @@ function updateFile(data) {
   });
 }
 
-fs.exists("./taskList.json", function(exists) {
-  if (exists) {
-    fs.readFile(
-      "./taskList.json",
-      {
-        encoding: "utf8"
-      },
-      function(err, taskList) {
-        console.log(taskList);
-        var data = JSON.parse(taskList);
-        task = data.taskList;
 
-        for (var i = 0; i < task.length; i++) {
-          task[i].date = showLeftDays(task[i].realDate);
+
+router.get("/deploy", function(req,res){
+  fs.exists("./taskList.json", function(exists) {
+    if (exists) {
+      fs.readFile(
+        "./taskList.json",
+        {
+          encoding: "utf8"
+        },
+        function(err, taskList) {
+          console.log(taskList);
+          var data = JSON.parse(taskList);
+          task = data.taskList;
+  
+          for (var i = 0; i < task.length; i++) {
+            task[i].date = showLeftDays(task[i].realDate);
+          }
+  
+          data.taskList = task;
+  
+          updateFile(data);
+
+          res.json(taskList);
         }
+      );
 
-        data.taskList = task;
+      
+    }
+  });
 
-        updateFile(data);
-      }
-    );
-  }
-});
+  
+})
+
 
 router.post("/addtask", function(req, res) {
   var newTaskText = req.body.newTask;
@@ -95,6 +106,7 @@ var complete = ["Kill Hogger"];
 router.post("/removetask", function(req, res) {
   var completeTask = req.body.check;
 
+  console.log(req.body.index);
   if (typeof completeTask === "string") {
     complete.push(completeTask);
 

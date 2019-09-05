@@ -1,76 +1,89 @@
+html
 
-extends layout
+  head
+    title= title
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(src='/javascripts/task.js')
+    link(rel='stylesheet', href='/stylesheets/style.css')
 
-block content
-  h1= title
+  body
+    h1= title
 
-  .container
-    
-      form(action = "/addtask" method="POST")
-        input(type="text" name="newTask" placeholder = "what to do next?")
-        input(type="number" name="dueDate" placeholder = "Due date: 1 (default)")
-        select(name="priority")
-          option(value="1").
-            ASAP
-          option(value="2").
-            Ordinary
-          option(value="3").
-            take it slow
-        button(type="submit").
-          add task
+    .container
+      
+        form( method="POST")
+          input(type="text" name="newTask" placeholder = "what to do next?")
+          input(type="number" name="dueDate" placeholder = "Due date: 1 (default)")
+          select(name="priority")
+            option(value="1").
+              ASAP
+            option(value="2").
+              Ordinary
+            option(value="3").
+              take it slow
+          button(type="submit" formaction = "/addtask").
+            add task
         h2 Current task
-        
-          table(id="taskTable")
+          form(method="POST")
+            table(id="taskTable")
+              thead
+                tr
+                  th Done?
+                  th What to do?
+                  th Due date
+                  th Priority
+              tbody
+                each val in task
+                  tr
+                    td
+                      input(name="index" value=val.date)
+                    td
+                      button(type="submit" formaction="/removetask" value=val.date).
+                        Complete
+                    td
+                      text= val.text
+                    td
+                      text= val.date
+                    td
+                      case val.priority
+                        when 1
+                          p ASAP
+                        when 2
+                          p Ordinary
+                        when 3
+                          p take it slow
+                        when "1"
+                          p ASAP
+                        when "2"
+                          p Ordinary
+                        when "3"
+                          p take it slow
+                      
+          button(type="reset" action="/removetask").
+            Remove
+
+            
+        h2 Archive
+          table(id="finished")
             tr
               th Done?
               th What to do?
-              th Due date
-              th Priority
-            each val in task
+            each val in complete
               tr
                 td
-                  button(type="submit" action="/removetask").
-                    Complete
+                  input(type="checkbox" checked)
                 td
-                  text= val.text
-                td
-                  text= val.date
-                td
-                  case val.priority
-                    when 1
-                      p ASAP
-                    when 2
-                      p Ordinary
-                    when 3
-                      p take it slow
-                    when "1"
-                      p ASAP
-                    when "2"
-                      p Ordinary
-                    when "3"
-                      p take it slow
-                  
-        button(type="reset" action="/removetask").
-          Remove
-
-          
-      h2 Archive
-        table(id="finished")
-          tr
-            th Done?
-            th What to do?
-          each val in complete
-            tr
-              td
-                input(type="checkbox" checked)
-              td
-                text= val
-
-  
+                  text= val
 
     
 
-    
+      
 
+      
 
-  p Happy Coding!
+    script.
+      $(document).ready(function(){
+        console.log("asdf");
+      })
+
+    p Happy Coding!
