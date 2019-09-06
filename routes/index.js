@@ -105,19 +105,19 @@ router.post("/completeTask", function(req, res) {
       console.log(req.body.index);
 
       var finishedData = data.taskList[req.body.index];
-      // completed tasks are moved to completeList.json
+      // completed tasks are moved to archiveList.json
       fs.readFile(
-        "./completeList.json",
+        "./archiveList.json",
         {
           encoding: "utf8"
         },
         function(error, completeData) {
           completeData = JSON.parse(completeData);
 
-          completeData.completeList.push(finishedData);
+          completeData.archiveList.push(finishedData);
 
           fs.writeFile(
-            "./completeList.json",
+            "./archiveList.json",
             JSON.stringify(completeData),
             function(error) {
               if (error) {
@@ -127,6 +127,26 @@ router.post("/completeTask", function(req, res) {
           );
         }
       );
+
+      data.taskList.splice(req.body.index, 1);
+
+      updateFile(data);
+    }
+  );
+
+  res.redirect("/");
+});
+
+router.post("/deleteTask", function(req, res) {
+  fs.readFile(
+    "./taskList.json",
+    {
+      encoding: "utf8"
+    },
+    function(error, taskList) {
+      var data = JSON.parse(taskList);
+      console.log(req.body.index);
+      // completed tasks are moved to archiveList.json
 
       data.taskList.splice(req.body.index, 1);
 
@@ -208,21 +228,16 @@ router.post("/sortTask", function(req, res) {
   res.redirect("/");
 });
 
-router.post("/removetask", function(req, res) {
-  var completeTask = req.body.check;
-
-  if (typeof completeTask === "string") {
-    complete.push(completeTask);
-
-    task.splice(task.indexOf(completeTask), 1);
-  } else if (typeof completeTask === "object") {
-    for (var i = 0; i < completeTask.length; i++) {
-      complete.push(completeTask[i]);
-      task.splice(task.indexOf(completeTask[i]), 1);
+router.get("/archiveTask", function(req, res) {
+  fs.readFile(
+    "./archiveList.json",
+    {
+      encoding: "utf8"
+    },
+    function(err, archiveList) {
+      res.json(archiveList);
     }
-  }
-
-  res.redirect("/");
+  );
 });
 
 /* GET home page. */

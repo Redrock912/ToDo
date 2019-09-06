@@ -63,14 +63,17 @@ html
                   th What to do?
                   th Due date
                   th Priority
-              tbody(id="taskTable")
+              tbody(id="taskTable" class="currentTaskTable")
 
                       
-          button(type="reset" action="/removetask").
-            Remove
 
             
         h2 Archive
+          table
+            thead
+              tr
+                th What have I done
+            tbody(class="archiveTaskTable")
 
     
 

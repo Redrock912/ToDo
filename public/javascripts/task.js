@@ -39,17 +39,39 @@ $(document).ready(function() {
             setPriorityText(taskList[i].priority) +
             "</td>" +
             '<td><button type="button" class="editButton">Edit</button></td>' +
+            '<td><button type="button" class="deleteButton">Delete</button></td>' +
             "</tr>";
         }
 
-        $("tbody").html(tableRow);
+        $(".currentTaskTable").html(tableRow);
+      }
+    });
+  };
+
+  var getArchiveList = function() {
+    $.ajax("/archiveTask", {
+      success: function(archiveList) {
+        var tableRow = "";
+        archiveList = JSON.parse(archiveList).archiveList;
+
+        for (var i = 0; i < archiveList.length; i++) {
+          tableRow += "<tr>" + "<td>" + archiveList[i].text + "</td>" + "</tr>";
+        }
+
+        $(".archiveTaskTable").html(tableRow);
       }
     });
   };
 
   getList();
+  getArchiveList();
 
-  $("tbody").on("click", ".completeButton", function() {
+  function refreshList() {
+    getList();
+    getArchiveList();
+  }
+
+  $(".currentTaskTable").on("click", ".completeButton", function() {
     $.ajax("/completeTask", {
       method: "POST",
       data: {
@@ -60,13 +82,30 @@ $(document).ready(function() {
               .siblings()
               .first()
               .text()
-          ) - 1 // 선택한 행의 인덱스
+          ) - 1
+      },
+      success: refreshList
+    });
+  });
+
+  $(".currentTaskTable").on("click", ".deleteButton", function() {
+    $.ajax("/deleteTask", {
+      method: "POST",
+      data: {
+        index:
+          parseInt(
+            $(this)
+              .parent()
+              .siblings()
+              .first()
+              .text()
+          ) - 1
       },
       success: getList
     });
   });
 
-  $("tbody").on("click", ".editButton", function() {
+  $(".currentTaskTable").on("click", ".editButton", function() {
     var modalForm = $("#id01")[0];
     modalForm.style.display = "block";
 
