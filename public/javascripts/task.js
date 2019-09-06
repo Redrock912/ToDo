@@ -15,6 +15,10 @@ function setPriorityText(val) {
   return text;
 }
 
+function alertOverdueTask(val) {
+  alert("there are " + val + " task(s) overdue!! ");
+}
+
 $(document).ready(function() {
   var getList = function() {
     $.ajax("/deploy", {
@@ -22,7 +26,12 @@ $(document).ready(function() {
         var tableRow = "";
         taskList = JSON.parse(taskList).taskList;
 
+        var alertIndex = 0;
+        var date = new Date().getTime();
         for (var i = 0; i < taskList.length; i++) {
+          if (taskList[i].realDate < date) {
+            alertIndex++;
+          }
           tableRow +=
             "<tr>" +
             '<td style="visibility: hidden">' +
@@ -41,6 +50,10 @@ $(document).ready(function() {
             '<td><button type="button" class="editButton">Edit</button></td>' +
             '<td><button type="button" class="deleteButton">Delete</button></td>' +
             "</tr>";
+        }
+
+        if (alertIndex > 0) {
+          alertOverdueTask(alertIndex);
         }
 
         $(".currentTaskTable").html(tableRow);
