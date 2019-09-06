@@ -3,6 +3,90 @@ body {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+button:hover {
+  opacity: 1;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+th,
+td {
+  padding: 2px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 1em;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #474e5d;
+  padding-top: 50px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #f44336;
+}
+
+.cancelbtn,
+.submitbtn {
+  float: left;
+  width: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
 a {
   color: #00b7ff;
 }

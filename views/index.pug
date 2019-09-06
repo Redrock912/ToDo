@@ -9,7 +9,35 @@ html
   body
     h1= title
 
-    .container
+    .modal#id01
+        
+      form(class="modal-content" method="POST")
+        .container
+          h1 Edit Task
+          hr
+          label(for="text") 
+            b What to do next?
+          input(type="text" name="editTask" placeholder="Give me a quest" required)
+          label(for="dueDate") 
+            b D-Day
+          input(type="number" name="dueDate" value =1)
+          label(for="priority")
+            b Priority
+          select(name="priority")
+            option(value="1").
+              ASAP
+            option(value="2").
+              Ordinary
+            option(value="3").
+              take it slow
+          .clearfix
+            button(type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn").
+              Cancel
+            button(type="submit" class="submitbtn" formaction="/editTask").
+              Submit
+    
+
+    .container2
       
         form( method="POST")
           input(type="text" name="newTask" placeholder = "what to do next?")
@@ -25,55 +53,27 @@ html
             add task
         h2 Current task
           form(method="POST")
-            table(id="taskTable")
+            table
               thead
                 tr
+                  th
+                    button(type="button" class="sort").
+                      Sort
                   th Done?
                   th What to do?
                   th Due date
                   th Priority
-              tbody
-                each val in task
-                  tr
-                    td
-                      input(name="index" value=val.date)
-                    td
-                      button(type="submit" formaction="/removetask" value=val.date).
-                        Complete
-                    td
-                      text= val.text
-                    td
-                      text= val.date
-                    td
-                      case val.priority
-                        when 1
-                          p ASAP
-                        when 2
-                          p Ordinary
-                        when 3
-                          p take it slow
-                        when "1"
-                          p ASAP
-                        when "2"
-                          p Ordinary
-                        when "3"
-                          p take it slow
+              tbody(id="taskTable" class="currentTaskTable")
+
                       
-          button(type="reset" action="/removetask").
-            Remove
 
             
         h2 Archive
-          table(id="finished")
-            tr
-              th Done?
-              th What to do?
-            each val in complete
+          table
+            thead
               tr
-                td
-                  input(type="checkbox" checked)
-                td
-                  text= val
+                th What have I done
+            tbody(class="archiveTaskTable")
 
     
 
